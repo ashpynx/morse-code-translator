@@ -8,7 +8,7 @@ void sigint(int signal);
 
 void clearbuf(char * str);
 
-int sig;
+volatile sig_atomic_t sig;
 
 int main (int argc , char * argv[])
 {
@@ -21,7 +21,7 @@ int main (int argc , char * argv[])
     int mode=-1;
     int lower=0,input=0,help=0;
     
-    while((val=getopt(argc,argv,"i:lhm:"))!=-1)
+    while((val=getopt(argc,argv,"i:lhm:"))!=-1 && !sig)
     {
         if(val =='i')
         {
@@ -55,6 +55,8 @@ int main (int argc , char * argv[])
             }
         }
     }
+    if(sig)
+        return 0;
     if(lower && mode==0)
     {
         fprintf(stderr,"Warning:\e[1;33m Text mode and lower text parameter doesnt make a difference.Ignoring -l\e[0m\n");

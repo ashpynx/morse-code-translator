@@ -1,6 +1,6 @@
 #include "trie.h"
 #include <ctype.h>
-
+#include "main.h"
 Trie * initTrie()
 
 {
@@ -104,7 +104,7 @@ int insertTrie(Trie * trie,char * str, char type)
             return 0;
     TrieNode * curr = trie->head;
 
-    for(int i=0; i< len ; i ++)
+    for(int i=0; i< len && !sig ; i ++)
     {
         if(curr->nodes[str[i] - '-'] == NULL)
         {
@@ -113,7 +113,8 @@ int insertTrie(Trie * trie,char * str, char type)
         
             curr = curr->nodes[str[i]-'-'];
     }
-
+    if(sig)
+        return 0;
     curr->type = type;
 
     trie->size++;
@@ -131,7 +132,7 @@ char getType(Trie * trie,char * str)
 
     TrieNode * curr = trie->head;
 
-    for(int i=0; i< len ; i ++)
+    for(int i=0; i< len && !sig ; i ++)
     {
         if(curr->nodes[str[i] -'-'] == NULL)
         {
@@ -140,7 +141,7 @@ char getType(Trie * trie,char * str)
         
             curr = curr->nodes[str[i]-'-'];
     }
-    
+    if(sig) return -1; 
 
     return curr->type;
 
@@ -158,7 +159,7 @@ int findTrie(Trie * trie,char * str)
 
     TrieNode * curr = trie->head;
 
-    for(int i=0; i< len ; i ++)
+    for(int i=0; i< len && !sig; i ++)
     {
         if(curr->nodes[str[i] -'-'] == NULL)
         {
@@ -167,7 +168,8 @@ int findTrie(Trie * trie,char * str)
         
             curr = curr->nodes[str[i]-'-'];
     }
-    
+    if(sig) return 0; 
+
     if(curr->type != '0')
         return 1;
 

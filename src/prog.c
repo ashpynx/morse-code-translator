@@ -1,6 +1,7 @@
 #include "prog.h"
 #include "trie.h"
 #include "word.h"
+#include "main.h"
 
 char * tokens[128] = { 0 };
 
@@ -13,7 +14,7 @@ handle_morse(FILE * f,int lower,Trie * obj)
         char c=0;
     init_tokens();
 
-    while((c=fgetc(f))!=EOF)
+    while((c=fgetc(f))!=EOF && !sig)
     {
         if(i>32)
         {
